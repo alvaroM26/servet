@@ -100,15 +100,15 @@ class ListaPokemon (var listaPokemon : MutableList<Pokemon> = mutableListOf()){
 
     fun buscarPokemonMasGordoPorTipoYPeso(tipoBuscado: String, peso : Int): ListaPokemon{
         val listaFiltrada = listaPokemon.filter { pokemon ->
-            var encontrado = false
-            pokemon.weight > peso
+            var tipoEncontrado = false
+            val pesoAdecuado = pokemon.weight > peso
 
             pokemon.types.forEach {tipo->
                 if (tipo.type.name == tipoBuscado)
-                    encontrado = true
+                    tipoEncontrado = true
             }
 
-            encontrado
+            tipoEncontrado && pesoAdecuado
         }
 
         return ListaPokemon(listaFiltrada.toMutableList())
@@ -120,8 +120,8 @@ class ListaPokemon (var listaPokemon : MutableList<Pokemon> = mutableListOf()){
             val buscarAtaque = "cut"
             var encontrado = false
 
-            it.abilities.forEach { ataque ->
-                if (ataque.ability.name == buscarAtaque)
+            it.moves.forEach { ataque ->
+                if (ataque.move.name == buscarAtaque)
                     encontrado = true
             }
 
