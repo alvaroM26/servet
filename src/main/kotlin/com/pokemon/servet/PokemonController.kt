@@ -1,10 +1,13 @@
 package com.pokemon.servet
 
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RestController
 import java.util.concurrent.atomic.AtomicInteger
 
-class PokemonController {
+@RestController
+class PokemonController(private val usuarioRepository: UsuarioRepository) {
 
     var numRequestRecibidas = AtomicInteger(0)
 
@@ -66,5 +69,20 @@ class PokemonController {
     fun requestPokemonPorAtaque(): ListaPokemon {
         return listaPokemon.buscarPokemonPorAtaque()
     }
+
+    @GetMapping("pokemon/{id}")
+    fun requestPokemonPorId(@PathVariable id: Long) : Any {
+        return listaPokemon.buscarPokemonPorId(id)
+    }
+
+    @DeleteMapping("pokemon/{id}/{token}")
+    fun requestDeletePokemonPorId(@PathVariable id : Long, @PathVariable token : String) :Any {
+        usuarioRepository.findAll().forEach {
+            if (it.token == token)
+                return listaPokemon.borrarPokemonPorId(id)
+        }
+        return "Usuario no valido"
+    }
+
 
 }
