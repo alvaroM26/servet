@@ -90,5 +90,28 @@ class UsuariosController (private  val usuarioRepository: UsuarioRepository) {
 
     }
 
+    @GetMapping("mostrarPokemonCapturados/{token}")
+    fun requestmostrarPokemonCapturados(@PathVariable token: String) : Any {
+
+        usuarioRepository.findAll().forEach { user->
+
+            if (user.token == token){
+
+             user.pokemonCapturado.forEach {
+
+                 listaPokemon.listaPokemon.forEach {encon->
+                     if (encon.id == user.pokemonCapturado)
+                 }
+
+             }
+
+                return "El usuario no tiene pokemons capturados"
+            }
+        }
+
+        return "Token no encontrado"
+
+    }
+
 }
 
