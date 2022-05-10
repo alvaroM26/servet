@@ -1,5 +1,6 @@
 package com.pokemon.servet
 
+import javax.persistence.ElementCollection
 import javax.persistence.Entity
 import javax.persistence.Id
 
@@ -7,4 +8,7 @@ import javax.persistence.Id
 data class Usuario (@Id var nombre : String, var pass : String){
     var token = nombre + pass
     var pokemonFavoritoId : Int? = null
+
+    @ElementCollection
+    var pokemonCapturado = mutableListOf<Int>()
 }

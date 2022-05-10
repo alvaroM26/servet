@@ -1,8 +1,6 @@
 package com.pokemon.servet
 
-import  org.springframework.data.repository.findByIdOrNull
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -25,9 +23,9 @@ class UsuariosController (private  val usuarioRepository: UsuarioRepository) {
             val user = userOpcional.get()
 
             //COMPROBAMOS LA CONTRASEÑA
-            if (user.pass == usuario.pass){
+            if (user.pass == usuario.pass) {
                 user
-            }else{
+            } else {
                 "Contraseña incorrecta"
             }
 
@@ -40,11 +38,11 @@ class UsuariosController (private  val usuarioRepository: UsuarioRepository) {
     }
 
     @PostMapping("pokemonFavorito/{token}/{pokemonId}")
-    fun requestPokemonFavorito(@PathVariable token : String, @PathVariable pokemonId : Int) : String {
+    fun requestPokemonFavorito(@PathVariable token: String, @PathVariable pokemonId: Int): String {
 
         usuarioRepository.findAll().forEach { user ->
 
-            if (user.token == token){
+            if (user.token == token) {
                 user.pokemonFavoritoId = pokemonId
                 usuarioRepository.save(user)
                 return "El usuario ${user.nombre} tiene un nuevo Pokemon favorito"
@@ -56,14 +54,14 @@ class UsuariosController (private  val usuarioRepository: UsuarioRepository) {
     }
 
     @GetMapping("mostrarPokemonFavorito/{token}")
-    fun requestmostrarPokemonFavorito(@PathVariable token: String) : Any {
+    fun requestmostrarPokemonFavorito(@PathVariable token: String): Any {
 
-        usuarioRepository.findAll().forEach {user ->
-            if (user.token == token){
+        usuarioRepository.findAll().forEach { user ->
+            if (user.token == token) {
 
                 listaPokemon.listaPokemon.forEach {
 
-                    if (user.pokemonFavoritoId == it.id  ){
+                    if (user.pokemonFavoritoId == it.id) {
                         return it
                     }
 
@@ -75,10 +73,22 @@ class UsuariosController (private  val usuarioRepository: UsuarioRepository) {
         return "Token no encontrado"
     }
 
-    @GetMapping("mostrarPokemonCapturados/{token}")
-    fun requestmostrarPokemonCapturados(@PathVariable token: String) : Any {
+    @PostMapping("PokemonCapturados/{token}/{pokemonId}")
+    fun requestPokemonCapturados(@PathVariable token: String, @PathVariable pokemonId: Int) : Any {
 
+        usuarioRepository.findAll().forEach { user ->
+
+            if (user.token == token) {
+                user.pokemonCapturado.add(pokemonId)
+                usuarioRepository.save(user)
+                return "El usuario ${user.nombre} tiene ${user.pokemonCapturado} capturados"
+            }
+
+        }
+
+        return "TOKEN NO ENCONTRADO"
 
     }
 
 }
+
