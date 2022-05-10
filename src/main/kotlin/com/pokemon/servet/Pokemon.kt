@@ -19,7 +19,7 @@ data class Pokemon (
     @SerializedName("held_items")
     val heldItems: List<HeldItem>,
 
-    val id: Long,
+    val id: Int,
 
     @SerializedName("is_default")
     val isDefault: Boolean,

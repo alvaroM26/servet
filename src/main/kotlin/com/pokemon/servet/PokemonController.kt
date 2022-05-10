@@ -6,10 +6,6 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 import java.util.concurrent.atomic.AtomicInteger
 
-
-
-
-
 @RestController
 class PokemonController(private val usuarioRepository: UsuarioRepository) {
 
@@ -75,12 +71,12 @@ class PokemonController(private val usuarioRepository: UsuarioRepository) {
     }
 
     @GetMapping("pokemon/{id}")
-    fun requestPokemonPorId(@PathVariable id: Long) : Any {
+    fun requestPokemonPorId(@PathVariable id: Int) : Any {
         return listaPokemon.buscarPokemonPorId(id)
     }
 
     @DeleteMapping("pokemon/{id}/{token}")
-    fun requestDeletePokemonPorId(@PathVariable id : Long, @PathVariable token : String) :Any {
+    fun requestDeletePokemonPorId(@PathVariable id : Int, @PathVariable token : String) :Any {
         usuarioRepository.findAll().forEach {
             if (it.token == token)
                 return listaPokemon.borrarPokemonPorId(id)

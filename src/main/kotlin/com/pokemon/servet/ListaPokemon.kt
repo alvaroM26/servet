@@ -132,14 +132,14 @@ class ListaPokemon (var listaPokemon : MutableList<Pokemon> = mutableListOf()){
         return ListaPokemon(listaFiltrada.toMutableList())
     }
 
-    fun buscarPokemonPorId(id: Long): Any {
+    fun buscarPokemonPorId(id: Int): Any {
         listaPokemon.forEach { pokemon: Pokemon ->
             if (pokemon.id == id) return pokemon
         }
         return "No encontrado"
     }
 
-    fun borrarPokemonPorId(id: Long): Boolean {
+    fun borrarPokemonPorId(id: Int): Boolean {
         val p = buscarPokemonPorId(id)
         return if (p == "No encontrado") {
             false
