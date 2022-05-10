@@ -100,7 +100,10 @@ class UsuariosController (private  val usuarioRepository: UsuarioRepository) {
              user.pokemonCapturado.forEach {
 
                  listaPokemon.listaPokemon.forEach {encon->
-                     if (encon.id == user.pokemonCapturado)
+
+                     if (encon.id == it){
+                       return it
+                     }
                  }
 
              }
