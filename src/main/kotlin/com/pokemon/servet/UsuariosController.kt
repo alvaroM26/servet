@@ -74,7 +74,7 @@ class UsuariosController (private  val usuarioRepository: UsuarioRepository) {
     }
 
     @PostMapping("PokemonCapturados/{token}/{pokemonId}")
-    fun requestPokemonCapturados(@PathVariable token: String, @PathVariable pokemonId: Int) : Any {
+    fun requestPokemonCapturados(@PathVariable token: String, @PathVariable pokemonId: Int) : String {
 
         usuarioRepository.findAll().forEach { user ->
 
@@ -97,16 +97,16 @@ class UsuariosController (private  val usuarioRepository: UsuarioRepository) {
 
             if (user.token == token){
 
-             user.pokemonCapturado.forEach {
+                listaPokemon.listaPokemon.forEach {poke->
 
-                 listaPokemon.listaPokemon.forEach {encon->
+                    user.pokemonCapturado.forEach {buscar->
 
-                     if (encon.id == it){
-                       return it
-                     }
-                 }
-
-             }
+                        if (buscar == poke.id){
+                            println(user.pokemonCapturado)
+                            return poke
+                        }
+                    }
+                }
 
                 return "El usuario no tiene pokemons capturados"
             }
