@@ -74,43 +74,43 @@ class UsuariosController (private  val usuarioRepository: UsuarioRepository) {
     }
 
     @PostMapping("PokemonCapturados/{token}/{pokemonId}")
-    fun requestPokemonCapturados(@PathVariable token: String, @PathVariable pokemonId: Int) : Any {
+    fun requestPokemonCapturados(@PathVariable token: String, @PathVariable pokemonId: Int): String {
 
         usuarioRepository.findAll().forEach { user ->
 
             if (user.token == token) {
-                user.pokemonCapturado.add(pokemonId)
+                user.pokemonsCapturado.add(pokemonId)
                 usuarioRepository.save(user)
-                return "El usuario ${user.nombre} tiene ${user.pokemonCapturado} capturados"
+                return "El usuario ${user.nombre} tiene ${user.pokemonsCapturado} capturados"
             }
 
         }
 
-        return "TOKEN NO ENCONTRADO"
+        return "Token no encontrado"
 
     }
 
     @GetMapping("mostrarPokemonCapturados/{token}")
-    fun requestmostrarPokemonCapturados(@PathVariable token: String) : Any {
+    fun requestmostrarPokemonCapturados(@PathVariable token: String): Any {
 
-        var listacapturadosinfo = mutableListOf<String>()
+        val listacapturadosinfo = mutableListOf<String>()
 
-        usuarioRepository.findAll().forEach { user->
+        usuarioRepository.findAll().forEach { user ->
 
-            if (user.token == token){
+            if (user.token == token) {
 
-                user.pokemonCapturado.forEach {
+                user.pokemonsCapturado.forEach {
 
-                    listaPokemon.listaPokemon.forEach {encon->
+                    listaPokemon.listaPokemon.forEach { encon ->
 
-                        if (encon.id == it){
+                        if (encon.id == it) {
                             listacapturadosinfo.add(encon.name)
                         }
 
                     }
 
                 }
-                return if(listacapturadosinfo.isEmpty())
+                return if (listacapturadosinfo.isEmpty())
                     "El usuario no tiene pokemons capturados"
                 else
                     listacapturadosinfo
@@ -122,5 +122,45 @@ class UsuariosController (private  val usuarioRepository: UsuarioRepository) {
 
     }
 
-}
+    @PostMapping("intercambiarPokemon/{tokenUsuario1}/{tokenUsuario2}/{pokemonId1}/{pokemonId2}")
+    fun requestintercambiarPokemon(@PathVariable tokenUsuario1: String,@PathVariable tokenUsuario2: String, @PathVariable pokemonId1: Int, @PathVariable pokemonId2: Int) :Any {
 
+        usuarioRepository.findAll().forEach {user1->
+            if (user1.token == tokenUsuario1){
+
+                usuarioRepository.findAll().forEach { user2->
+                    if (user2.token == tokenUsuario2){
+
+                        user1.pokemonsCapturado.forEach {id1->
+                            listaPokemon.listaPokemon.forEach {encon1->
+                                if (encon1.id == id1){
+
+                                    user2.pokemonsCapturado.forEach { id2->
+                                        listaPokemon.listaPokemon.forEach { encon2->
+                                            if (encon2.id == id2){
+
+                                                user1.pokemonsCapturado.remove(id1)
+                                                user1.pokemonsCapturado.add(id2)
+                                                usuarioRepository.save(user1)
+
+                                                user2.pokemonsCapturado.remove(id2)
+                                                user2.pokemonsCapturado.add(id1)
+                                                usuarioRepository.save(user2)
+                                                return "Intercambio realizado con exito"
+
+                                            }
+                                        }
+                                    }
+                                    return "El id2 no existe"
+                                }
+                            }
+                        }
+                        return "El id1 no existe"
+                    }
+                }
+                return "El token2 no existe"
+            }
+        }
+        return "El token1 no existe"
+    }
+}

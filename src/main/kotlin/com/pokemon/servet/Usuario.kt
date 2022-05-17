@@ -10,5 +10,5 @@ data class Usuario (@Id var nombre : String, var pass : String){
     var pokemonFavoritoId : Int? = null
 
     @ElementCollection
-    var pokemonCapturado = mutableListOf<Int>()
+    var pokemonsCapturado = mutableListOf<Int>()
 }
