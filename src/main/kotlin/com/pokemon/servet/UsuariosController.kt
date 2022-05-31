@@ -132,35 +132,36 @@ class UsuariosController (private  val usuarioRepository: UsuarioRepository) {
                     if (user2.token == tokenUsuario2){
 
                         user1.pokemonsCapturado.forEach {id1->
-                            listaPokemon.listaPokemon.forEach {encon1->
-                                if (encon1.id == id1){
+                            if (id1 == pokemonId1){
 
-                                    user2.pokemonsCapturado.forEach { id2->
-                                        listaPokemon.listaPokemon.forEach { encon2->
-                                            if (encon2.id == id2){
+                                user2.pokemonsCapturado.forEach { id2->
+                                    if (id2 == pokemonId2){
 
-                                                user1.pokemonsCapturado.remove(id1)
-                                                user1.pokemonsCapturado.add(id2)
-                                                usuarioRepository.save(user1)
+                                        user1.pokemonsCapturado.remove(id1)
+                                        user1.pokemonsCapturado.add(id2)
+                                        usuarioRepository.save(user1)
 
-                                                user2.pokemonsCapturado.remove(id2)
-                                                user2.pokemonsCapturado.add(id1)
-                                                usuarioRepository.save(user2)
-                                                return "Intercambio realizado con exito"
-
-                                            }
-                                        }
+                                        user2.pokemonsCapturado.remove(id2)
+                                        user2.pokemonsCapturado.add(id1)
+                                        usuarioRepository.save(user2)
+                                        return "Intercambio realizado con exito"
                                     }
-                                    return "El id2 no existe"
+
                                 }
+                                return "La persona 2 no tiene el id2 del pokemon"
+
                             }
+
                         }
-                        return "El id1 no existe"
+                        return "La persona 1 no tiene el id1 del pokemon"
                     }
+
                 }
                 return "El token2 no existe"
+
             }
         }
         return "El token1 no existe"
+
     }
 }
